@@ -1,0 +1,60 @@
+<mat-toolbar color="primary">
+  <mat-icon>local_fire_department</mat-icon>
+  <span>{{title}}</span>
+</mat-toolbar>
+
+<div class="content-wrapper">
+  <button (click)="newTask()" mat-button>
+    <mat-icon>add</mat-icon> Add Task
+  </button>
+
+  <div class="container-wrapper">
+    <div class="container">
+      <h2>Todo</h2>
+
+      <mat-card
+        cdkDropList
+        id="todo"
+        #todoList="cdkDropList"
+        [cdkDropListData]="getTodo()"
+        [cdkDropListConnectedTo]="[doneList, doingList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list">
+        <p class="empty-label" *ngIf="getTodo().length === 0">Empty list</p>
+        <app-task (edit)="editTask('todo', $event)" *ngFor="let task of getTodo()" cdkDrag [task]="task"></app-task>
+      </mat-card>
+    </div>
+
+    <div class="container">
+      <h2>Doing</h2>
+
+      <mat-card
+        cdkDropList
+        id="doing"
+        #doingList="cdkDropList"
+        [cdkDropListData]="getDoing()"
+        [cdkDropListConnectedTo]="[todoList, doneList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list">
+        <p class="empty-label" *ngIf="getDoing().length === 0">Empty list</p>
+        <app-task (edit)="editTask('doing', $event)" *ngFor="let task of getDoing()" cdkDrag [task]="task"></app-task>
+      </mat-card>
+    </div>
+
+    <div class="container">
+      <h2>Done</h2>
+
+      <mat-card
+        cdkDropList
+        id="done"
+        #doneList="cdkDropList"
+        [cdkDropListData]="getDone()"
+        [cdkDropListConnectedTo]="[todoList, doingList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list">
+        <p class="empty-label" *ngIf="getDone().length === 0">Empty list</p>
+        <app-task (edit)="editTask('done', $event)" *ngFor="let task of getDone()" cdkDrag [task]="task"></app-task>
+      </mat-card>
+    </div>
+  </div>
+</div>
